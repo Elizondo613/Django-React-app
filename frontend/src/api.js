@@ -13,7 +13,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-export const getTasks  = ()         => API.get("tasks/");
+export const getTasks = (page = 1) => API.get(`tasks/?page=${page}`);
 export const createTask = (task)    => API.post("tasks/", task);
 export const deleteTask = (id)      => API.delete(`tasks/${id}/`);
 export const toggleTask = (id, data) => API.patch(`tasks/${id}/`, data);

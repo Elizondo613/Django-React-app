@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     # Terceros
     'rest_framework',
     'corsheaders',
@@ -69,7 +70,19 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+
+        #FILTRADO Y BÚSQUEDA
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',  # filtrado por campo
+        'rest_framework.filters.SearchFilter',                # búsqueda por texto
+        'rest_framework.filters.OrderingFilter',              # ordenamiento
+    ],
+
+    #PAGINACIÓN
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
 }
+
 
 ROOT_URLCONF = 'backend.urls'
 

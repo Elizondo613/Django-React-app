@@ -6,12 +6,15 @@ function App() {
   const [title, setTitle]     = useState("");
   const [error, setError]     = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages]   = useState(1);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await getTasks();
-        setTasks(res.data);
+        const res = await getTasks(currentPage);
+        setTasks(res.data.results);
+        setTotalPages(Math.ceil(res.data.count / 5));
       // eslint-disable-next-line no-unused-vars
       } catch (err) {
         setError("Error al cargar tareas.");
@@ -22,8 +25,9 @@ function App() {
 
   const loadTasks = useCallback(async () => {
     try {
-      const res = await getTasks();
-      setTasks(res.data);
+      const res = await getTasks(currentPage);
+      setTasks(res.data.results);
+      setTotalPages(Math.ceil(res.data.count / 5));
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError("Error al cargar tareas.");
@@ -107,7 +111,23 @@ function App() {
           </li>
         ))}
       </ul>
+      <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+        <button
+          onClick={() => setCurrentPage(p => p - 1)}
+          disabled={currentPage === 1}
+        >
+          ← Anterior
+        </button>
+        <span>Página {currentPage} de {totalPages}</span>
+        <button
+          onClick={() => setCurrentPage(p => p + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente →
+        </button>
+      </div>
     </div>
+    
   );
 }
 
